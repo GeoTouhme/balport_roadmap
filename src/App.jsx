@@ -154,7 +154,7 @@ export default function Roadmap() {
         </div>
       </div>
 
-      {/* Gantt Bar */}
+      {/* Gantt Bar - Hidden on small screens or scrollable */}
       <div
         style={{
           background: "#111827",
@@ -162,6 +162,7 @@ export default function Roadmap() {
           padding: "20px 24px",
           marginBottom: 32,
           border: "1px solid #1e293b",
+          overflowX: "auto",
         }}
       >
         <div
@@ -171,13 +172,14 @@ export default function Roadmap() {
             marginBottom: 16,
             display: "flex",
             justifyContent: "space-between",
+            minWidth: "400px",
           }}
         >
           <span>الأسبوع ١</span>
           <span>الشهر ٣</span>
           <span>الأسبوع ٢٤</span>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, minWidth: "400px" }}>
           {phases.map((p) => (
             <div
               key={p.id}
@@ -241,10 +243,26 @@ export default function Roadmap() {
         </div>
       </div>
 
-      {/* Phase Detail */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 28 }}>
-        {/* Phase selector */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {/* Phase Detail - Stacked on mobile */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 20,
+          marginBottom: 28,
+        }}
+      >
+        {/* Phase selector - Horizontal scroll on mobile */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            overflowX: "auto",
+            gap: 10,
+            paddingBottom: 10,
+            scrollbarWidth: "none",
+          }}
+        >
           {phases.map((p) => (
             <button
               key={p.id}
@@ -253,41 +271,30 @@ export default function Roadmap() {
                 background: active === p.id ? `${p.color}22` : "#111827",
                 border: `1px solid ${active === p.id ? p.color : "#1e293b"}`,
                 borderRadius: 12,
-                padding: "12px 16px",
+                padding: "10px 16px",
                 cursor: "pointer",
                 textAlign: "right",
                 transition: "all 0.2s ease",
                 display: "flex",
                 alignItems: "center",
-                gap: 12,
+                gap: 8,
+                flexShrink: 0,
+                minWidth: "140px",
               }}
             >
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 11, color: "#64748b" }}>{p.duration}</div>
+                <div style={{ fontSize: 10, color: "#64748b" }}>{p.duration}</div>
                 <div
                   style={{
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: 700,
                     color: active === p.id ? p.color : "#e2e8f0",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {p.icon} {p.title}
                 </div>
               </div>
-              {p.status === "active" && (
-                <span
-                  style={{
-                    fontSize: 10,
-                    background: "#f59e0b22",
-                    color: "#f59e0b",
-                    border: "1px solid #f59e0b55",
-                    borderRadius: 20,
-                    padding: "2px 8px",
-                  }}
-                >
-                  جاري الآن
-                </span>
-              )}
             </button>
           ))}
         </div>
@@ -297,28 +304,28 @@ export default function Roadmap() {
           style={{
             background: "#111827",
             borderRadius: 16,
-            padding: 24,
+            padding: 20,
             border: `1px solid ${phase.color}44`,
           }}
         >
           <div style={{ fontSize: 11, color: phase.color, fontWeight: 700, marginBottom: 4 }}>
             {phase.label} • {phase.duration}
           </div>
-          <h2 style={{ margin: "0 0 20px", fontSize: 20, color: "#f1f5f9" }}>
+          <h2 style={{ margin: "0 0 20px", fontSize: 18, color: "#f1f5f9" }}>
             {phase.icon} {phase.title}
           </h2>
 
           <div style={{ fontSize: 13, fontWeight: 700, color: "#64748b", marginBottom: 10 }}>
             المهام
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
             {phase.tasks.map((t, i) => (
-              <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+              <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                 <div
                   style={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: 4,
+                    width: 20,
+                    height: 20,
+                    borderRadius: 5,
                     flexShrink: 0,
                     background: t.done ? `${phase.color}33` : "#1e293b",
                     border: `1.5px solid ${t.done ? phase.color : "#334155"}`,
@@ -332,9 +339,9 @@ export default function Roadmap() {
                 </div>
                 <span
                   style={{
-                    fontSize: 13,
+                    fontSize: 14,
                     color: t.done ? "#64748b" : "#cbd5e1",
-                    lineHeight: 1.5,
+                    lineHeight: 1.4,
                     textDecoration: t.done ? "line-through" : "none",
                   }}
                 >
@@ -357,7 +364,7 @@ export default function Roadmap() {
                       background: `${phase.color}11`,
                       border: `1px solid ${phase.color}33`,
                       borderRadius: 8,
-                      padding: "8px 12px",
+                      padding: "10px 14px",
                       fontSize: 12,
                       color: "#94a3b8",
                       lineHeight: 1.6,
@@ -372,19 +379,19 @@ export default function Roadmap() {
         </div>
       </div>
 
-      {/* Extra recommendations */}
+      {/* Extra recommendations - Stacked on mobile */}
       <div
         style={{
           background: "#111827",
           borderRadius: 16,
-          padding: 24,
+          padding: 20,
           border: "1px solid #1e293b",
         }}
       >
         <div style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", marginBottom: 16 }}>
           🎯 توصيات استراتيجية شاملة
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {[
             {
               icon: "🗺️",
@@ -422,15 +429,15 @@ export default function Roadmap() {
               style={{
                 background: "#0f172a",
                 borderRadius: 10,
-                padding: "14px 16px",
+                padding: "16px",
                 border: "1px solid #1e293b",
               }}
             >
-              <div style={{ fontSize: 20, marginBottom: 6 }}>{item.icon}</div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", marginBottom: 4 }}>
+              <div style={{ fontSize: 22, marginBottom: 8 }}>{item.icon}</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", marginBottom: 4 }}>
                 {item.title}
               </div>
-              <div style={{ fontSize: 12, color: "#64748b", lineHeight: 1.6 }}>{item.text}</div>
+              <div style={{ fontSize: 13, color: "#64748b", lineHeight: 1.6 }}>{item.text}</div>
             </div>
           ))}
         </div>
