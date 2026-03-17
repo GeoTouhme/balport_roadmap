@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import RoadmapPDF from "./RoadmapPDF";
 
 const initialPhases = [
   {
@@ -229,10 +231,31 @@ export default function Roadmap() {
             fontWeight: 700,
             cursor: "pointer",
             boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+            marginRight: "10px"
           }}
         >
           {isEditing ? "💾 Save Changes" : "⚙️ Edit Schedule"}
         </button>
+
+        <PDFDownloadLink document={<RoadmapPDF />} fileName="Balport_Online_Roadmap.pdf">
+          {({ loading }) => (
+            <button
+              style={{
+                background: "#10b981",
+                color: "white",
+                border: "none",
+                padding: "10px 24px",
+                borderRadius: "24px",
+                fontSize: "13px",
+                fontWeight: 700,
+                cursor: "pointer",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+              }}
+            >
+              {loading ? "Generating PDF..." : "📥 Download PDF"}
+            </button>
+          )}
+        </PDFDownloadLink>
       </div>
 
       {/* Gantt Bar */}
