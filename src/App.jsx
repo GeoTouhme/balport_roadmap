@@ -3,103 +3,103 @@ import { useState } from "react";
 const phases = [
   {
     id: 0,
-    label: "المرحلة ٠",
-    title: "تحسين Price Book",
+    label: "Phase 0",
+    title: "Price Book Optimization",
     status: "active",
-    duration: "الأسبوع ١ → ٣",
+    duration: "Week 1 → 3",
     weeks: [1, 3],
     color: "#f59e0b",
     icon: "📦",
     tasks: [
-      { text: "ربط API لقاعدة بيانات UPC (upc-lookup وما شابه)", done: true },
-      { text: "مطابقة اسم المنتج + الحجم + النكهة مع كود UPC", done: true },
-      { text: "كتابة وصف احترافي لكل منتج", done: false },
-      { text: "إضافة صورة أو اثنتين لكل منتج", done: false },
-      { text: "مراجعة نهائية للـ price book وتدقيقه", done: false },
+      { text: "Connect API for UPC database (upc-lookup, etc.)", done: true },
+      { text: "Match Product Name + Size + Flavor with UPC code", done: true },
+      { text: "Write professional descriptions for each product", done: false },
+      { text: "Add one or two high-quality images per product", done: false },
+      { text: "Final review and audit of the price book", done: false },
     ],
     suggestions: [],
   },
   {
     id: 1,
-    label: "المرحلة ١",
-    title: "رفع على المنصات + Deals",
+    label: "Phase 1",
+    title: "Platform Upload + Deals",
     status: "upcoming",
-    duration: "الأسبوع ٤ → ٥",
+    duration: "Week 4 → 5",
     weeks: [4, 5],
     color: "#3b82f6",
     icon: "🚀",
     tasks: [
-      { text: "رفع الـ price book المحسّن على DoorDash و Uber Eats", done: false },
-      { text: "تحديث صور وفئات المتجر على المنصتين", done: false },
-      { text: "إطلاق خطة Offers & Deals (Bundle deals, Free delivery threshold)", done: false },
-      { text: "التحقق من ساعات العمل، المنطقة، والـ minimum order", done: false },
+      { text: "Upload optimized price book to DoorDash and Uber Eats", done: false },
+      { text: "Update store images and categories on both platforms", done: false },
+      { text: "Launch Offers & Deals plan (Bundle deals, Free delivery threshold)", done: false },
+      { text: "Verify operating hours, delivery zones, and minimum order", done: false },
     ],
     suggestions: [
-      "اعمل Bundle deals خصيصاً للأوردر أونلاين (مثلاً: اشتري ٢ + ادفع ١ توصيل)",
-      "فعّل 'Pickup discount' على DoorDash لتشجيع الاستلام الذاتي وتقليل العمولة",
+      "Create online-exclusive Bundle deals (e.g., Buy 2 + Free delivery)",
+      "Enable 'Pickup discount' on DoorDash to encourage self-collection and reduce commission",
     ],
   },
   {
     id: 2,
-    label: "المرحلة ٢",
-    title: "إطلاق الموقع الإلكتروني",
+    label: "Phase 2",
+    title: "Website Launch",
     status: "upcoming",
-    duration: "الأسبوع ٥ → ٦",
+    duration: "Week 5 → 6",
     weeks: [5, 6],
     color: "#8b5cf6",
     icon: "🌐",
     tasks: [
-      { text: "إطلاق الموقع الـ Full Stack رسمياً", done: false },
-      { text: "تفعيل DoorDash Drive On-Demand API Integration", done: false },
-      { text: "اختبار Age Verification Flow وصفحة الـ Checkout", done: false },
-      { text: "إضافة Google Analytics + Meta Pixel للتتبع", done: false },
-      { text: "ربط Google Business Profile بالموقع", done: false },
+      { text: "Officially launch the Full Stack website", done: false },
+      { text: "Enable DoorDash Drive On-Demand API Integration", done: false },
+      { text: "Test Age Verification Flow and Checkout page", done: false },
+      { text: "Add Google Analytics + Meta Pixel for tracking", done: false },
+      { text: "Link Google Business Profile to the website", done: false },
     ],
     suggestions: [
-      "أضف SMS/Email capture عند أول أوردر لبناء قاعدة عملاء للـ retargeting",
-      "اعمل صفحة 'اطلب مباشرة واوفّر' تشرح الفرق مقارنة بـ DoorDash للزبون",
+      "Add SMS/Email capture at first order to build a customer database for retargeting",
+      "Create an 'Order Direct & Save' page explaining the price difference vs DoorDash",
     ],
   },
   {
     id: 3,
-    label: "المرحلة ٣",
-    title: "حملات Instagram",
+    label: "Phase 3",
+    title: "Instagram Campaigns",
     status: "upcoming",
-    duration: "الأسبوع ٧ → ١٢",
+    duration: "Week 7 → 12",
     weeks: [7, 12],
     color: "#ec4899",
     icon: "📱",
     tasks: [
-      { text: "إنتاج Reels أسبوعية (منتج مميز، عرض، behind the scenes)", done: false },
-      { text: "حملة 'اطلب من موقعنا وادفع أقل' تستهدف Newport Beach", done: false },
-      { text: "Instagram Stories بعروض محدودة الوقت (Flash deals)", done: false },
-      { text: "Paid Ads تستهدف ZIP codes قريبة (92663, 92657, 92625...)", done: false },
-      { text: "رد على كل تعليق وMessage خلال ٢٤ ساعة", done: false },
+      { text: "Produce weekly Reels (featured product, offer, behind the scenes)", done: false },
+      { text: "'Order Direct & Pay Less' campaign targeting Newport Beach", done: false },
+      { text: "Instagram Stories with limited-time offers (Flash deals)", done: false },
+      { text: "Paid Ads targeting nearby ZIP codes (92663, 92657, 92625...)", done: false },
+      { text: "Reply to every comment and Message within 24 hours", done: false },
     ],
     suggestions: [
-      "استخدم UGC (User Generated Content) — اطلب من الزبائن يصوروا طلباتهم مقابل discount",
-      "اعمل Collab مع محلات أو influencers محليين في OC",
+      "Use UGC (User Generated Content) — ask customers to film their orders for a discount",
+      "Collaborate with local businesses or influencers in Orange County (OC)",
     ],
   },
   {
     id: 4,
-    label: "المرحلة ٤",
-    title: "قياس وتحسين",
+    label: "Phase 4",
+    title: "Measurement & Optimization",
     status: "upcoming",
-    duration: "الشهر ٣ → ٦",
+    duration: "Month 3 → 6",
     weeks: [13, 24],
     color: "#10b981",
     icon: "📊",
     tasks: [
-      { text: "تحليل Conversion Rate الموقع مقابل DoorDash/Uber Eats", done: false },
-      { text: "مراجعة أكثر المنتجات مبيعاً وتعزيز ظهورها", done: false },
-      { text: "A/B Test على صور المنتجات والـ description", done: false },
-      { text: "مقارنة ROAS لكل حملة Instagram وتحسين الـ targeting", done: false },
-      { text: "إضافة برنامج Loyalty (نقاط، كود خصم للعملاء المتكررين)", done: false },
+      { text: "Analyze Website Conversion Rate vs DoorDash/Uber Eats", done: false },
+      { text: "Review top-selling products and boost their visibility", done: false },
+      { text: "A/B Test product images and descriptions", done: false },
+      { text: "Compare ROAS for each Instagram campaign and refine targeting", done: false },
+      { text: "Add Loyalty Program (points, discount codes for repeat customers)", done: false },
     ],
     suggestions: [
-      "ابدأ بـ Local SEO: اكتب blog posts خفيفة مثل 'best wine delivery Newport Beach'",
-      "فكّر بـ Google Ads للـ search terms 'liquor delivery near me' في OC",
+      "Start Local SEO: write light blog posts like 'best wine delivery Newport Beach'",
+      "Consider Google Ads for search terms like 'liquor delivery near me' in OC",
     ],
   },
 ];
@@ -121,7 +121,7 @@ export default function Roadmap() {
         fontFamily: "'Segoe UI', Tahoma, sans-serif",
         color: "#e2e8f0",
         padding: "32px 24px",
-        direction: "rtl",
+        direction: "ltr",
       }}
     >
       {/* Header */}
@@ -135,7 +135,7 @@ export default function Roadmap() {
             marginBottom: 8,
           }}
         >
-          خطة تطوير المبيعات الأونلاين
+          Online Sales Growth Roadmap
         </div>
         <h1
           style={{
@@ -150,7 +150,7 @@ export default function Roadmap() {
           Bal-Port Liquors — Online Growth Roadmap
         </h1>
         <div style={{ fontSize: 13, color: "#475569", marginTop: 8 }}>
-          Newport Beach, CA • ٦ أشهر • ٢٤ أسبوع
+          Newport Beach, CA • 6 Months • 24 Weeks
         </div>
       </div>
 
@@ -175,9 +175,9 @@ export default function Roadmap() {
             minWidth: "400px",
           }}
         >
-          <span>الأسبوع ١</span>
-          <span>الشهر ٣</span>
-          <span>الأسبوع ٢٤</span>
+          <span>Week 1</span>
+          <span>Month 3</span>
+          <span>Week 24</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 10, minWidth: "400px" }}>
           {phases.map((p) => (
@@ -193,7 +193,7 @@ export default function Roadmap() {
                   color: p.color,
                   fontWeight: 700,
                   flexShrink: 0,
-                  textAlign: "right",
+                  textAlign: "left",
                 }}
               >
                 {p.icon} {p.label}
@@ -211,7 +211,7 @@ export default function Roadmap() {
                 <div
                   style={{
                     position: "absolute",
-                    right: `${barLeft(p.weeks[0])}%`,
+                    left: `${barLeft(p.weeks[0])}%`,
                     width: `${barWidth(p.weeks[0], p.weeks[1])}%`,
                     height: "100%",
                     background:
@@ -231,7 +231,7 @@ export default function Roadmap() {
                       fontWeight: 700,
                       color: "#fff",
                       whiteSpace: "nowrap",
-                      paddingRight: 6,
+                      paddingLeft: 6,
                     }}
                   >
                     {p.duration}
@@ -273,7 +273,7 @@ export default function Roadmap() {
                 borderRadius: 12,
                 padding: "10px 16px",
                 cursor: "pointer",
-                textAlign: "right",
+                textAlign: "left",
                 transition: "all 0.2s ease",
                 display: "flex",
                 alignItems: "center",
@@ -295,6 +295,20 @@ export default function Roadmap() {
                   {p.icon} {p.title}
                 </div>
               </div>
+              {p.status === "active" && (
+                <span
+                  style={{
+                    fontSize: 10,
+                    background: "#f59e0b22",
+                    color: "#f59e0b",
+                    border: "1px solid #f59e0b55",
+                    borderRadius: 20,
+                    padding: "2px 8px",
+                  }}
+                >
+                  Active
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -316,7 +330,7 @@ export default function Roadmap() {
           </h2>
 
           <div style={{ fontSize: 13, fontWeight: 700, color: "#64748b", marginBottom: 10 }}>
-            المهام
+            Tasks
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
             {phase.tasks.map((t, i) => (
@@ -354,7 +368,7 @@ export default function Roadmap() {
           {phase.suggestions.length > 0 && (
             <>
               <div style={{ fontSize: 13, fontWeight: 700, color: "#64748b", marginBottom: 10 }}>
-                💡 اقتراحات إضافية
+                💡 Additional Suggestions
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {phase.suggestions.map((s, i) => (
@@ -389,39 +403,39 @@ export default function Roadmap() {
         }}
       >
         <div style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", marginBottom: 16 }}>
-          🎯 توصيات استراتيجية شاملة
+          🎯 Strategic Recommendations
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {[
             {
               icon: "🗺️",
               title: "Local SEO",
-              text: "حسّن Google Business Profile وأضف صور وساعات. استهدف كلمات مثل 'liquor delivery Newport Beach'",
+              text: "Optimize Google Business Profile. Add fresh photos and update hours. Target keywords like 'liquor delivery Newport Beach'.",
             },
             {
               icon: "💬",
               title: "SMS Marketing",
-              text: "اجمع أرقام الزبائن عند الاستلام. ارسل flash deals أسبوعية. التكلفة أقل بكثير من الإعلانات",
+              text: "Collect customer numbers at pickup. Send weekly flash deals. Costs are significantly lower than paid ads.",
             },
             {
               icon: "⭐",
               title: "Reviews Strategy",
-              text: "اطلب من كل زبون راضٍ يكتب Google Review. ١٠ reviews إيجابية ترفع ظهورك في الخريطة",
+              text: "Ask every satisfied customer for a Google Review. 10+ positive reviews boost your local search ranking.",
             },
             {
               icon: "🎁",
               title: "Loyalty Program",
-              text: "نقاط على كل أوردر عبر الموقع. يرفع معدل التكرار ويحفز الطلب المباشر بدل DoorDash",
+              text: "Earn points on every website order. Increases retention and motivates direct ordering over DoorDash.",
             },
             {
               icon: "📦",
               title: "Bundle Deals",
-              text: "صمّم bundles خاصة بالأونلاين مش موجودة بـ DoorDash. يصعب المقارنة ويزيد Average Order Value",
+              text: "Design online-only bundles not available on DoorDash. Makes price comparison harder and increases AOV.",
             },
             {
               icon: "📈",
               title: "Weekly Reporting",
-              text: "تابع يومياً: عدد الأوردرات، متوسط الطلب، وأكثر المنتجات مبيعاً. القرارات بالأرقام مش بالتخمين",
+              text: "Track daily: Order count, AOV, and best-selling items. Make decisions based on data, not guesswork.",
             },
           ].map((item, i) => (
             <div
@@ -444,8 +458,7 @@ export default function Roadmap() {
       </div>
 
       <div style={{ textAlign: "center", marginTop: 24, fontSize: 11, color: "#334155" }}>
-        الأولوية: الموقع المباشر يوفر العمولة (~١٥-٣٠٪ من كل أوردر على DoorDash) — كل أوردر على الموقع
-        = ربح إضافي صافي
+        Priority: Direct website saves commission (~15-30% per DoorDash order) — Every website order = pure extra profit.
       </div>
     </div>
   );
