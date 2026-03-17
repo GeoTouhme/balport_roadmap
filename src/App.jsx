@@ -17,6 +17,7 @@ const initialPhases = [
       { text: "Add one or two high-quality images per product", done: false },
       { text: "Final review and audit of the price book", done: false },
     ],
+    suggestions: [],
   },
   {
     id: 1,
@@ -30,8 +31,12 @@ const initialPhases = [
     tasks: [
       { text: "Upload optimized price book to DoorDash and Uber Eats", done: false },
       { text: "Update store images and categories on both platforms", done: false },
-      { text: "Launch Offers & Deals plan", done: false },
-      { text: "Verify operating hours and delivery zones", done: false },
+      { text: "Launch Offers & Deals plan (Bundle deals, Free delivery threshold)", done: false },
+      { text: "Verify operating hours, delivery zones, and minimum order", done: false },
+    ],
+    suggestions: [
+      "Create online-exclusive Bundle deals (e.g., Buy 2 + Free delivery)",
+      "Enable 'Pickup discount' on DoorDash to encourage self-collection and reduce commission",
     ],
   },
   {
@@ -45,8 +50,14 @@ const initialPhases = [
     icon: "🌐",
     tasks: [
       { text: "Officially launch the Full Stack website", done: false },
-      { text: "Enable DoorDash Drive API Integration", done: false },
-      { text: "Test Age Verification and Checkout", done: false },
+      { text: "Enable DoorDash Drive On-Demand API Integration", done: false },
+      { text: "Test Age Verification Flow and Checkout page", done: false },
+      { text: "Add Google Analytics + Meta Pixel for tracking", done: false },
+      { text: "Link Google Business Profile to the website", done: false },
+    ],
+    suggestions: [
+      "Add SMS/Email capture at first order to build a customer database for retargeting",
+      "Create an 'Order Direct & Save' page explaining the price difference vs DoorDash",
     ],
   },
   {
@@ -59,9 +70,15 @@ const initialPhases = [
     color: "#ec4899",
     icon: "📱",
     tasks: [
-      { text: "Produce weekly Reels", done: false },
-      { text: "'Order Direct & Pay Less' campaign", done: false },
-      { text: "Paid Ads targeting nearby ZIP codes", done: false },
+      { text: "Produce weekly Reels (featured product, offer, behind the scenes)", done: false },
+      { text: "'Order Direct & Pay Less' campaign targeting Newport Beach", done: false },
+      { text: "Instagram Stories with limited-time offers (Flash deals)", done: false },
+      { text: "Paid Ads targeting nearby ZIP codes (92663, 92657, 92625...)", done: false },
+      { text: "Reply to every comment and Message within 24 hours", done: false },
+    ],
+    suggestions: [
+      "Use UGC (User Generated Content) — ask customers to film their orders for a discount",
+      "Collaborate with local businesses or influencers in Orange County (OC)",
     ],
   },
   {
@@ -74,10 +91,49 @@ const initialPhases = [
     color: "#10b981",
     icon: "📊",
     tasks: [
-      { text: "Analyze Website Conversion Rate", done: false },
-      { text: "Review top-selling products", done: false },
-      { text: "A/B Test product descriptions", done: false },
+      { text: "Analyze Website Conversion Rate vs DoorDash/Uber Eats", done: false },
+      { text: "Review top-selling products and boost their visibility", done: false },
+      { text: "A/B Test product images and descriptions", done: false },
+      { text: "Compare ROAS for each Instagram campaign and refine targeting", done: false },
+      { text: "Add Loyalty Program (points, discount codes for repeat customers)", done: false },
     ],
+    suggestions: [
+      "Start Local SEO: write light blog posts like 'best wine delivery Newport Beach'",
+      "Consider Google Ads for search terms like 'liquor delivery near me' in OC",
+    ],
+  },
+];
+
+const extraStrategies = [
+  {
+    icon: "🗺️",
+    title: "Local SEO",
+    text: "Optimize Google Business Profile. Add fresh photos and update hours. Target keywords like 'liquor delivery Newport Beach'.",
+  },
+  {
+    icon: "💬",
+    title: "SMS Marketing",
+    text: "Collect customer numbers at pickup. Send weekly flash deals. Costs are significantly lower than paid ads.",
+  },
+  {
+    icon: "⭐",
+    title: "Reviews Strategy",
+    text: "Ask every satisfied customer for a Google Review. 10+ positive reviews boost your local search ranking.",
+  },
+  {
+    icon: "🎁",
+    title: "Loyalty Program",
+    text: "Earn points on every website order. Increases retention and motivates direct ordering over DoorDash.",
+  },
+  {
+    icon: "📦",
+    title: "Bundle Deals",
+    text: "Design online-only bundles not available on DoorDash. Makes price comparison harder and increases AOV.",
+  },
+  {
+    icon: "📈",
+    title: "Weekly Reporting",
+    text: "Track daily: Order count, AOV, and best-selling items. Make decisions based on data, not guesswork.",
   },
 ];
 
@@ -89,26 +145,28 @@ export default function Roadmap() {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("balport_roadmap_v2_progress");
+    const saved = localStorage.getItem("balport_roadmap_v3_progress");
     if (saved) {
-      try { setPhases(JSON.parse(saved)); } catch (e) {}
+      try {
+        setPhases(JSON.parse(saved));
+      } catch (e) {}
     }
   }, []);
 
   const saveToStore = (newPhases) => {
     setPhases(newPhases);
-    localStorage.setItem("balport_roadmap_v2_progress", JSON.stringify(newPhases));
+    localStorage.setItem("balport_roadmap_v3_progress", JSON.stringify(newPhases));
   };
 
   const updateWeeks = (id, start, end) => {
-    const newPhases = phases.map(p => {
+    const newPhases = phases.map((p) => {
       if (p.id === id) {
         const s = Math.max(1, parseInt(start) || 1);
         const e = Math.max(s, parseInt(end) || s);
-        return { 
-          ...p, 
+        return {
+          ...p,
           weeks: [s, e],
-          duration: s === e ? `Week ${s}` : `Week ${s} → ${e}`
+          duration: s === e ? `Week ${s}` : `Week ${s} → ${e}`,
         };
       }
       return p;
@@ -117,9 +175,9 @@ export default function Roadmap() {
   };
 
   const toggleTask = (phaseId, taskIndex) => {
-    const newPhases = phases.map(p => {
+    const newPhases = phases.map((p) => {
       if (p.id === phaseId) {
-        const newTasks = p.tasks.map((t, i) => i === taskIndex ? { ...t, done: !t.done } : t);
+        const newTasks = p.tasks.map((t, i) => (i === taskIndex ? { ...t, done: !t.done } : t));
         return { ...p, tasks: newTasks };
       }
       return p;
@@ -132,39 +190,111 @@ export default function Roadmap() {
   const barWidth = (s, e) => ((e - s + 1) / TOTAL_WEEKS) * 100;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0a0a0f", fontFamily: "sans-serif", color: "#e2e8f0", padding: "20px" }}>
-      <div style={{ textAlign: "center", marginBottom: 30 }}>
-        <h1 style={{ fontSize: "24px", margin: "0 0 10px", background: "linear-gradient(to right, #f59e0b, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-          Bal-Port Growth Roadmap
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#0a0a0f",
+        fontFamily: "'Segoe UI', Tahoma, sans-serif",
+        color: "#e2e8f0",
+        padding: "32px 24px",
+        direction: "ltr",
+      }}
+    >
+      {/* Header */}
+      <div style={{ textAlign: "center", marginBottom: 40 }}>
+        <h1
+          style={{
+            fontSize: 28,
+            fontWeight: 800,
+            margin: "0 0 10px",
+            background: "linear-gradient(135deg, #f59e0b, #ec4899, #8b5cf6)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          Bal-Port Liquors — Online Growth
         </h1>
-        <button 
+        <div style={{ fontSize: 13, color: "#64748b", marginBottom: 20 }}>
+          Newport Beach, CA • 6 Months
+        </div>
+        <button
           onClick={() => setIsEditing(!isEditing)}
-          style={{ background: isEditing ? "#ef4444" : "#3b82f6", color: "white", border: "none", padding: "8px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: "bold", cursor: "pointer" }}
+          style={{
+            background: isEditing ? "#ef4444" : "#3b82f6",
+            color: "white",
+            border: "none",
+            padding: "10px 24px",
+            borderRadius: "24px",
+            fontSize: "13px",
+            fontWeight: 700,
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+          }}
         >
           {isEditing ? "💾 Save Changes" : "⚙️ Edit Schedule"}
         </button>
       </div>
 
-      {/* Gantt Bar View */}
-      <div style={{ background: "#111827", borderRadius: "16px", padding: "20px", marginBottom: "24px", border: "1px solid #1e293b", overflowX: "auto" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px", minWidth: "400px" }}>
+      {/* Gantt Bar */}
+      <div
+        style={{
+          background: "#111827",
+          borderRadius: 16,
+          padding: "20px 24px",
+          marginBottom: 32,
+          border: "1px solid #1e293b",
+          overflowX: "auto",
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, minWidth: "450px" }}>
           {phases.map((p) => (
-            <div key={p.id} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div style={{ width: "70px", fontSize: "10px", color: p.color, fontWeight: "bold" }}>{p.label}</div>
-              <div style={{ flex: 1, height: "24px", background: "#1e293b", borderRadius: "4px", position: "relative" }}>
-                <div style={{ 
-                  position: "absolute", 
-                  left: `${barLeft(p.weeks[0])}%`, 
-                  width: `${barWidth(p.weeks[0], p.weeks[1])}%`, 
-                  height: "100%", 
-                  background: active === p.id ? p.color : `${p.color}33`,
-                  borderRadius: "4px",
-                  transition: "all 0.3s",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "9px", color: "#fff", fontWeight: "bold",
-                  border: active === p.id ? "1px solid white" : "none"
-                }}>
-                  {p.weeks[0]}-{p.weeks[1]}
+            <div
+              key={p.id}
+              onClick={() => setActive(p.id)}
+              style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}
+            >
+              <div
+                style={{
+                  width: 80,
+                  fontSize: 11,
+                  color: p.color,
+                  fontWeight: 700,
+                  textAlign: "left",
+                }}
+              >
+                {p.icon} {p.label}
+              </div>
+              <div
+                style={{
+                  flex: 1,
+                  height: 28,
+                  background: "#1e293b",
+                  borderRadius: 6,
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    left: `${barLeft(p.weeks[0])}%`,
+                    width: `${barWidth(p.weeks[0], p.weeks[1])}%`,
+                    height: "100%",
+                    background:
+                      active === p.id
+                        ? `linear-gradient(90deg, ${p.color}cc, ${p.color})`
+                        : `${p.color}22`,
+                    border: active === p.id ? `1px solid ${p.color}` : "none",
+                    borderRadius: 6,
+                    transition: "all 0.3s ease",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <span style={{ fontSize: 9, fontWeight: 700, color: "#fff" }}>
+                    {p.weeks[0]}-{p.weeks[1]}
+                  </span>
                 </div>
               </div>
             </div>
@@ -172,51 +302,223 @@ export default function Roadmap() {
         </div>
       </div>
 
-      {/* Phase Selection Tabs */}
-      <div style={{ display: "flex", gap: "8px", overflowX: "auto", marginBottom: "20px", paddingBottom: "10px" }}>
-        {phases.map((p) => (
-          <button key={p.id} onClick={() => setActive(p.id)} style={{ 
-            background: active === p.id ? `${p.color}22` : "#111827",
-            border: `1px solid ${active === p.id ? p.color : "#1e293b"}`,
-            borderRadius: "12px", padding: "12px", cursor: "pointer", minWidth: "120px", textAlign: "left"
-          }}>
-            <div style={{ fontSize: "10px", color: "#64748b" }}>{p.duration}</div>
-            <div style={{ fontSize: "12px", fontWeight: "bold", color: active === p.id ? p.color : "white" }}>{p.icon} {p.title}</div>
-          </button>
-        ))}
-      </div>
-
-      {/* Active Phase Editor/Viewer */}
-      <div style={{ background: "#111827", borderRadius: "16px", padding: "20px", border: `1px solid ${phase.color}66` }}>
-        <div style={{ marginBottom: "20px" }}>
-          <span style={{ fontSize: "12px", color: phase.color, fontWeight: "bold" }}>{phase.label}</span>
-          <h2 style={{ margin: "5px 0", fontSize: "20px" }}>{phase.icon} {phase.title}</h2>
-          
-          {isEditing && (
-            <div style={{ display: "flex", gap: "10px", marginTop: "15px", background: "#1e293b", padding: "10px", borderRadius: "8px" }}>
-              <div style={{ flex: 1 }}>
-                <label style={{ fontSize: "10px", color: "#64748b", display: "block" }}>Start Week</label>
-                <input type="number" value={phase.weeks[0]} onChange={(e) => updateWeeks(phase.id, e.target.value, phase.weeks[1])} style={{ width: "100%", background: "#0a0a0f", border: "1px solid #334155", color: "white", padding: "5px", borderRadius: "4px" }} />
-              </div>
-              <div style={{ flex: 1 }}>
-                <label style={{ fontSize: "10px", color: "#64748b", display: "block" }}>End Week</label>
-                <input type="number" value={phase.weeks[1]} onChange={(e) => updateWeeks(phase.id, phase.weeks[0], e.target.value)} style={{ width: "100%", background: "#0a0a0f", border: "1px solid #334155", color: "white", padding: "5px", borderRadius: "4px" }} />
-              </div>
-            </div>
-          )}
+      {/* Detail Panel */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 28 }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 10,
+            overflowX: "auto",
+            paddingBottom: 10,
+            scrollbarWidth: "none",
+          }}
+        >
+          {phases.map((p) => (
+            <button
+              key={p.id}
+              onClick={() => setActive(p.id)}
+              style={{
+                background: active === p.id ? `${p.color}22` : "#111827",
+                border: `1px solid ${active === p.id ? p.color : "#1e293b"}`,
+                borderRadius: 12,
+                padding: "12px 16px",
+                cursor: "pointer",
+                display: "flex",
+                flexDirection: "column",
+                minWidth: "140px",
+                textAlign: "left",
+              }}
+            >
+              <span style={{ fontSize: 10, color: "#64748b" }}>{p.duration}</span>
+              <span
+                style={{
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: active === p.id ? p.color : "#e2e8f0",
+                }}
+              >
+                {p.icon} {p.title}
+              </span>
+            </button>
+          ))}
         </div>
 
-        <div style={{ fontSize: "13px", fontWeight: "bold", color: "#64748b", marginBottom: "10px" }}>Tasks</div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          {phase.tasks.map((t, i) => (
-            <div key={i} onClick={() => toggleTask(phase.id, i)} style={{ display: "flex", alignItems: "center", gap: "12px", cursor: "pointer", padding: "10px", background: t.done ? "transparent" : "#1e293b44", borderRadius: "8px", border: "1px solid transparent" }}>
-              <div style={{ width: "20px", height: "20px", borderRadius: "5px", border: `2px solid ${phase.color}`, background: t.done ? phase.color : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                {t.done && <span style={{ color: "#000", fontWeight: "bold" }}>✓</span>}
+        <div
+          style={{
+            background: "#111827",
+            borderRadius: 16,
+            padding: 24,
+            border: `1px solid ${phase.color}44`,
+          }}
+        >
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontSize: 11, color: phase.color, fontWeight: 700, marginBottom: 4 }}>
+              {phase.label} • {phase.duration}
+            </div>
+            <h2 style={{ margin: "0", fontSize: 22, color: "#f1f5f9" }}>
+              {phase.icon} {phase.title}
+            </h2>
+
+            {isEditing && (
+              <div
+                style={{
+                  display: "flex",
+                  gap: 10,
+                  marginTop: 15,
+                  background: "#1e293b",
+                  padding: "12px",
+                  borderRadius: "12px",
+                }}
+              >
+                <div style={{ flex: 1 }}>
+                  <label style={{ fontSize: "10px", color: "#64748b", display: "block" }}>
+                    Start Week
+                  </label>
+                  <input
+                    type="number"
+                    value={phase.weeks[0]}
+                    onChange={(e) => updateWeeks(phase.id, e.target.value, phase.weeks[1])}
+                    style={{
+                      width: "100%",
+                      background: "#0a0a0f",
+                      border: "1px solid #334155",
+                      color: "white",
+                      padding: "8px",
+                      borderRadius: "6px",
+                    }}
+                  />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={{ fontSize: "10px", color: "#64748b", display: "block" }}>
+                    End Week
+                  </label>
+                  <input
+                    type="number"
+                    value={phase.weeks[1]}
+                    onChange={(e) => updateWeeks(phase.id, phase.weeks[0], e.target.value)}
+                    style={{
+                      width: "100%",
+                      background: "#0a0a0f",
+                      border: "1px solid #334155",
+                      color: "white",
+                      padding: "8px",
+                      borderRadius: "6px",
+                    }}
+                  />
+                </div>
               </div>
-              <span style={{ fontSize: "14px", color: t.done ? "#64748b" : "white", textDecoration: t.done ? "line-through" : "none" }}>{t.text}</span>
+            )}
+          </div>
+
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#64748b", marginBottom: 12 }}>
+            Tasks (Tap to toggle)
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 24 }}>
+            {phase.tasks.map((t, i) => (
+              <div
+                key={i}
+                onClick={() => toggleTask(phase.id, i)}
+                style={{
+                  display: "flex",
+                  gap: 12,
+                  alignItems: "center",
+                  cursor: "pointer",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  background: t.done ? "transparent" : "#1e293b55",
+                }}
+              >
+                <div
+                  style={{
+                    width: 22,
+                    height: 22,
+                    borderRadius: 6,
+                    flexShrink: 0,
+                    background: t.done ? phase.color : "transparent",
+                    border: `2px solid ${phase.color}`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {t.done && <span style={{ color: "#000", fontSize: 14, fontWeight: "bold" }}>✓</span>}
+                </div>
+                <span
+                  style={{
+                    fontSize: 15,
+                    color: t.done ? "#64748b" : "#e2e8f0",
+                    textDecoration: t.done ? "line-through" : "none",
+                  }}
+                >
+                  {t.text}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {phase.suggestions && phase.suggestions.length > 0 && (
+            <>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#64748b", marginBottom: 12 }}>
+                💡 Additional Suggestions
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {phase.suggestions.map((s, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      background: `${phase.color}11`,
+                      border: `1px solid ${phase.color}33`,
+                      borderRadius: 10,
+                      padding: "12px 16px",
+                      fontSize: 13,
+                      color: "#94a3b8",
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {s}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Extra Strategies */}
+      <div
+        style={{
+          background: "#111827",
+          borderRadius: 16,
+          padding: 24,
+          border: "1px solid #1e293b",
+        }}
+      >
+        <div style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", marginBottom: 20 }}>
+          🎯 Strategic Recommendations
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {extraStrategies.map((item, i) => (
+            <div
+              key={i}
+              style={{
+                background: "#0f172a",
+                borderRadius: 12,
+                padding: "16px",
+                border: "1px solid #1e293b",
+              }}
+            >
+              <div style={{ fontSize: 24, marginBottom: 8 }}>{item.icon}</div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: "#f1f5f9", marginBottom: 6 }}>
+                {item.title}
+              </div>
+              <div style={{ fontSize: 13, color: "#64748b", lineHeight: 1.6 }}>{item.text}</div>
             </div>
           ))}
         </div>
+      </div>
+
+      <div style={{ textAlign: "center", fontSize: 12, color: "#475569", padding: "32px 0" }}>
+        Your progress and schedule changes are saved locally.
       </div>
     </div>
   );
